@@ -1,4 +1,4 @@
-require_relative "board.rb"
+
 require_relative "instruction_functions.rb"
 
 ## So that one may easily adjust the format of the input

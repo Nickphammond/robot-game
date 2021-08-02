@@ -1,15 +1,5 @@
 
 
-
-
-
-
-
-
-
-
-def place_input(inp, format_arr)
-
     class InputObject 
 
         def initialize(inp, start, i, input_type)
@@ -61,7 +51,17 @@ def place_input(inp, format_arr)
     
     end
 
-    
+
+
+
+
+
+
+def place_input(inp, format_arr)
+
+
+
+
 
     state = true
     answer_array = []
