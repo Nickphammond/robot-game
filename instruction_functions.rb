@@ -1,55 +1,6 @@
 
+require_relative "input_class.rb"
 
-    class InputObject 
-
-        def initialize(inp, start, i, input_type)
-            @inp = inp
-            @start = start
-            @increment = i
-            @input_type = input_type
-        end
-    
-    
-        def process_input()
-    
-            if (@input_type == 'STRING')
-    
-                if (@inp[@start, @increment] == 'PLACE')
-                    return [true, @increment]
-                else
-                    return [false, @increment]
-                end
-    
-            elsif (@input_type == 'INTEGER')
-    
-                if ((@inp[@start, @increment].to_i).to_s == @inp[@start, @increment])
-                    return [true, @increment, @inp[@start, @increment].to_i]
-                else
-                    return [false, @increment, @inp[@start, @increment].to_i]
-                end
-    
-            elsif (@input_type === 'ORIENTATION')
-    
-                orientation_array = ['N', 'E', 'S', 'W']
-                orientation_num = nil
-                h = 0
-                while (h < 4) && (orientation_num == nil)
-                    if orientation_array[h] == @inp[@start, @increment]
-                        orientation_num = h
-                    end
-                    h = h + 1
-                end
-                if @increment == 1
-                    if orientation_num != nil
-                        return [true, @increment, orientation_num]
-                    end
-                end
-                return [false]
-            end
-    
-        end
-    
-    end
 
 
 
@@ -84,8 +35,14 @@ def place_input(inp, format_arr)
         
             if (inp[start + i] == segment_break_type) || segment_break_type == ''
         
-                input_object = InputObject.new(inp, start, i, input_type)
-                callback = input_object.process_input()
+                begin
+                    input_object = InputObject.new(inp, start, i, input_type)
+                    callback = input_object.process_input()
+                rescue
+                    callback = nil
+                    puts "Unable to continue as input class has not been defined for place_input method"
+                end
+
                 return callback
         
             else
@@ -94,18 +51,22 @@ def place_input(inp, format_arr)
         
         end
 
+
         val = segment_search(inp, sub_length, format_arr[m][1], format_arr[m][0])
-
-        state = val[0]
-        if state
-            segment_length = val[1]
-            if format_arr[m][0] != 'STRING'
-                answer_array.push(val[2])
+        if val != nil
+            state = val[0]
+            if state
+                segment_length = val[1]
+                if format_arr[m][0] != 'STRING'
+                    answer_array.push(val[2])
+                end
             end
-        end
-        sub_length = sub_length + segment_length + format_arr[m][1].length
+            sub_length = sub_length + segment_length + format_arr[m][1].length
 
-        m = m + 1
+            m = m + 1
+        else
+           return false
+        end
 
     end
 

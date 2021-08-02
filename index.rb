@@ -1,6 +1,7 @@
 
 require_relative "instruction_functions.rb"
 
+
 ## So that one may easily adjust the format of the input
 format_arr = [['STRING', ' '], ['INTEGER', ','], ['INTEGER', ','], ['ORIENTATION', '']]
 
@@ -18,7 +19,9 @@ while continue == false && quit == false
     a = gets.chomp
     b = place_input(a, format_arr)
     if b != nil
-        if (b[0]>=0 && b[0]<board_size_x) && (b[1]>=0 && b[1]<board_size_y)
+        if b == false
+            quit = true
+        elsif (b[0]>=0 && b[0]<board_size_x) && (b[1]>=0 && b[1]<board_size_y)
             user_x = b[0]
             user_y = b[1]
             user_o = b[2]
