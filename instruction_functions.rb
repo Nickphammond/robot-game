@@ -1,52 +1,167 @@
 
 
 
-def place_input(inp)
 
-    orientation_array = ['N', 'E', 'S', 'W']
-    if inp[0, 6] == 'PLACE '
-        puts "A"
-        ## this loop is currently redundant, but in this form it can be readily modified to allow for boards of size 
-        ## greater than 10
-        i = 0
-        while (inp[6 + i] != ',') && (6 + i < inp.length - 1)
-            i = i + 1
+
+
+
+
+
+
+def place_input(inp, format_arr)
+
+    class InputObject 
+
+        def initialize(inp, start, i, input_type)
+            @inp = inp
+            @start = start
+            @increment = i
+            @input_type = input_type
+        end
+    
+    
+        def process_input()
+    
+            if (@input_type == 'STRING')
+    
+                if (@inp[@start, @increment] == 'PLACE')
+                    return [true, @increment]
+                else
+                    return [false, @increment]
+                end
+    
+            elsif (@input_type == 'INTEGER')
+    
+                if ((@inp[@start, @increment].to_i).to_s == @inp[@start, @increment])
+                    return [true, @increment, @inp[@start, @increment].to_i]
+                else
+                    return [false, @increment, @inp[@start, @increment].to_i]
+                end
+    
+            elsif (@input_type === 'ORIENTATION')
+    
+                orientation_array = ['N', 'E', 'S', 'W']
+                orientation_num = nil
+                h = 0
+                while (h < 4) && (orientation_num == nil)
+                    if orientation_array[h] == @inp[@start, @increment]
+                        orientation_num = h
+                    end
+                    h = h + 1
+                end
+                if @increment == 1
+                    if orientation_num != nil
+                        return [true, @increment, orientation_num]
+                    end
+                end
+                return [false]
+            end
+    
+        end
+    
+    end
+
+    
+
+    state = true
+    answer_array = []
+
+    sub_length = 0
+    segment_length = 0
+    m = 0
+    while state && m < format_arr.length
+        
+        def segment_search(inp, start, segment_break_type, input_type)
+
+            i = 0
+            if segment_break_type != '' 
+                while (inp[start + i] != segment_break_type) && (start + i < inp.length - 1)
+                    i = i + 1
+                end
+            else
+                i = inp.length - start
+            end
+        
+            if (inp[start + i] == segment_break_type) || segment_break_type == ''
+        
+                input_object = InputObject.new(inp, start, i, input_type)
+                callback = input_object.process_input()
+                return callback
+        
+            else
+                return [false, i]
+            end
+        
         end
 
-        if (inp[6 + i] == ',') && ((inp[6, i].to_i).to_s === inp[6, i])
+        val = segment_search(inp, sub_length, format_arr[m][1], format_arr[m][0])
 
-            j = 0
-            while (inp[7 + i + j] != ',') && (7 + i + j < inp.length - 1) 
-                j = j + 1
+        state = val[0]
+        if state
+            segment_length = val[1]
+            if format_arr[m][0] != 'STRING'
+                answer_array.push(val[2])
             end
+        end
+        sub_length = sub_length + segment_length + format_arr[m][1].length
 
-            if (inp[7 + i + j] == ',') && ((inp[7 + i, j].to_i).to_s === inp[7 + i, j])
+        m = m + 1
 
-                if 9 + i + j == inp.length
-                    orientation_num = nil
-                    k = 0
-                    while (k < 4) && (orientation_num == nil)
-                        
-                        if orientation_array[k] == inp[8 + i + j]
-                            orientation_num = k
-                        end
+    end
 
-                        k = k + 1
-                    end
 
-                    if orientation_num != nil
-                        return [inp[6, i].to_i, inp[7 + i, j].to_i, orientation_num]
-                    end
+    if state
 
+        if !(sub_length == inp.length)
+            state = false
+        end
+
+    end
+
+    if state
+        return answer_array
+    end
+
+    return nil
+
+end
+
+
+
+
+
+
+def move_one_position(start_pos, board_size_x, board_size_y)
+
+    orientation_array = ['N', 'E', 'S', 'W']
+    orientation_num = start_pos[2]
+
+
+    if start_pos.kind_of?(Array)
+
+        if start_pos.length == 3 
+
+            if (start_pos[0].is_a? Integer) && (start_pos[1].is_a? Integer) && (start_pos[2].is_a? Integer)
+
+                if (start_pos[0] > 0 && start_pos[0] < board_size_x - 1) && (start_pos[1] > 0 && start_pos[1] < board_size_y - 1) && (start_pos[2] >= 0 && start_pos[2] < 4)
+                    a = start_pos[0] + ((-1)**(orientation_num/2))*((orientation_num)%2)
+                    b = start_pos[1] + ((-1)**(orientation_num/2))*((orientation_num+1)%2)
+                    return [a, b]
+
+                elsif (start_pos[0] < 0 && start_pos[0] >= board_size_x) && (start_pos[1] < 0 && start_pos[1] >= board_size_y)
+                    return reponse_to_dynamic_board(start_pos, board_size_x, board_size_y)
                 end
 
             end
 
         end
+
     end
 
     return nil
+
 end
+
 
 
 
@@ -76,8 +191,7 @@ def report_position(pos_arr)
     orientation_array = ['N', 'E', 'S', 'W']
 
     if pos_arr.kind_of?(Array)
-        puts "ZOB"
-        puts pos_arr
+
         if pos_arr.length == 3 
 
             if (pos_arr[0].is_a? Integer) && (pos_arr[1].is_a? Integer) && (pos_arr[2].is_a? Integer)

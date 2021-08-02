@@ -1,12 +1,17 @@
+
+
+
+
+## This is can be added to so that one can play with a board that is dynamic. However it is currently set to nil
+def reponse_to_dynamic_board(start_pos, board_size_x, board_size_y) 
+    return nil
+end
+
+
+
 # function that takes in an array start_pos = [pos_x, pos_y, orientation] returns an end position array after one step.
 # function purposely coded so that start_pos can be any positional array, so one could add other entities on to the board 
 # and still have this function be viable for them.
-
-
-def reponse_to_dynamic_board(start_pos, board_size_x, board_size_y) {
-    return nil
-}
-
 
 def new_board_position(start_pos, board_size_x, board_size_y)
 
@@ -35,10 +40,7 @@ def new_board_position(start_pos, board_size_x, board_size_y)
 
     end
 
-
     return nil
-
-
 
 end
 
