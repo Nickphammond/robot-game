@@ -17,17 +17,17 @@
             if (@input_type == 'STRING')
 
                 if (@inp[@start, @increment] == 'PLACE')
-                    return [true, @increment]
+                    return [true, @increment, 0, 0]
                 else
-                    return [false, @increment]
+                    return [false, @increment, 0, 0]
                 end
     
             elsif (@input_type == 'INTEGER')
     
                 if ((@inp[@start, @increment].to_i).to_s == @inp[@start, @increment])
-                    return [true, @increment, @inp[@start, @increment].to_i]
+                    return [true, @increment, @inp[@start, @increment].to_i, 0]
                 else
-                    return [false, @increment, @inp[@start, @increment].to_i]
+                    return [false, @increment, @inp[@start, @increment].to_i, 0]
                 end
     
             elsif (@input_type === 'ORIENTATION')
@@ -43,10 +43,10 @@
                 end
                 if @increment == 1
                     if orientation_num != nil
-                        return [true, @increment, orientation_num]
+                        return [true, @increment, orientation_num, 0]
                     end
                 end
-                return [false]
+                return [false, 0, 0, 0]
             end
     
             return nil

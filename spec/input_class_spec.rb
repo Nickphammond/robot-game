@@ -7,7 +7,7 @@ describe 'InputObject' do
         input_type = 'STRING'
 
         obj = InputObject.new(inp, start, i, input_type)
-        expect(obj.process_input).to eq [true, i]
+        expect(obj.process_input).to eq [true, i, 0, 0]
     end
 
     it '' do
@@ -17,7 +17,7 @@ describe 'InputObject' do
         input_type = 'STRING'
 
         obj = InputObject.new(inp, start, i, input_type)
-        expect(obj.process_input).to eq [false, i]
+        expect(obj.process_input).to eq [false, i, 0, 0]
     end
 
 end

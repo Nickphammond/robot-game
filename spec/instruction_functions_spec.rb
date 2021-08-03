@@ -39,7 +39,7 @@ describe 'place_input' do
         format_arr = [['STRING', ' '], ['INTEGER', ','], ['INTEGER', ','], ['ORIENTATION', '']]
         inp = 'PLACE 1,1,N'
 
-        expect(place_input(inp, format_arr)).to eq [1, 1, 0]
+        expect(place_input(inp, format_arr)).to eq [0, 1, 1, 0]
 
     end
 
@@ -48,7 +48,7 @@ describe 'place_input' do
         format_arr = [['STRING', ' '], ['INTEGER', ','], ['INTEGER', ','], ['ORIENTATION', '']]
         inp = 'PLACE 10,1,W'
 
-        expect(place_input(inp, format_arr)).to eq [10, 1, 3]
+        expect(place_input(inp, format_arr)).to eq [0, 10, 1, 3]
 
     end
 

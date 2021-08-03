@@ -6,45 +6,13 @@ require_relative "input_class.rb"
 
 
 
-
+# This method is for submitting an input for the initial place location and a format array which informs how the input should
+# handled, providing an appropriate input object has been defined for the application.
 
 def place_input(inp, format_arr)
 
-    def segment_search(inp, start, segment_break_type, input_type)
 
-        i = 0
-        j = 1
-        if segment_break_type != '' 
-            while (inp[start + i] != segment_break_type) && (start + i < inp.length - 1)
-                i = i + 1
-            end
-            while (inp[start + i + j] == ' ') && (start + i + j < inp.length - 1)
-                j = j + 1
-            end
-        else
-            i = inp.length - start
-        end
-    
-        if (inp[start + i] == segment_break_type) || segment_break_type == ''
-            
-            begin
-                input_object = InputObject.new(inp, start, i, input_type)
-                callback = input_object.process_input()
-                callback = callback.unshift(j - 1)
-            rescue
-                callback = nil
-                puts "Unable to continue as input class has not been defined for place_input method"
-            end
-            
-            return callback
-    
-        else
-            return [0, false, i]
-        end
-    
-    end
-
-
+   
 
     state = true
     answer_array = []
@@ -55,25 +23,50 @@ def place_input(inp, format_arr)
     while state && m < format_arr.length
 
 
-        val = segment_search(inp, sub_length, format_arr[m][1], format_arr[m][0])
-        if val != nil
+        # Here we list through the array to detect segments of instructions from the input
+        val = nil
+        callback = nil
+        i = 0
+        j = 1
+        if format_arr[m][1] != '' 
+            while (inp[sub_length + i] != format_arr[m][1]) && (sub_length + i < inp.length - 1)
+                i = i + 1
+            end
+            while (inp[sub_length + i + j] == ' ') && (sub_length + i + j < inp.length - 1)
+                j = j + 1
+            end
+        else
+            i = inp.length - sub_length
+        end
 
-            if val.length > 2
-                state = val[1]
-                segment_length = val[2]
-                if format_arr[m][0] != 'STRING'
-                    answer_array.push(val[3])
-                end
-            else
-                state = val[1]
+        # Test to see if format is violated
+        if !((inp[sub_length + i] == format_arr[m][1]) || format_arr[m][1] == '')
+            state = false
+        end
+
+
+        # InputObject is where the methods for processing all the different type of format combinations. A new InputObject is
+        # created and the relevant arguments are passed. If the developer has not supplied InputObject code, then rather than
+        # causing an error, it will give a warning.
+        begin
+            input_object = InputObject.new(inp, sub_length, i, format_arr[m][0])
+            callback = input_object.process_input().push(j - 1)
+
+
+            if callback != nil
+
+                state = callback[0]
+                segment_length = callback[1]
+                answer_array.push(callback[2])
+                sub_length = sub_length + segment_length + format_arr[m][1].length
+
+                m = m + 1
+    
             end
 
-
-            sub_length = sub_length + segment_length + format_arr[m][1].length
-
-            m = m + 1
-        else
-           return false
+        rescue
+            callback = nil
+            puts "Unable to continue as input class has not been defined for place_input method"
         end
 
     end
