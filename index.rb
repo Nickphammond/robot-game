@@ -8,6 +8,8 @@ format_arr = [['STRING', ' '], ['INTEGER', ','], ['INTEGER', ','], ['ORIENTATION
 ## So that size of board can be adjusted easily
 board_size_x = 5
 board_size_y = 5
+
+# Default starting position
 user_x = 0
 user_y = 0
 user_o = 0
@@ -15,7 +17,8 @@ user_o = 0
 continue = false
 quit = false
 while continue == false && quit == false
-    puts "Welcome to the table-top robot. Please enter a position in the form of 'PLACE X,Y,F'"
+    puts "Welcome to the table-top robot. Please enter a position in the form of 'PLACE X,Y,F', where 0<=X<" + board_size_x.to_s + ", where 0<=Y<" + board_size_y.to_s
+    puts 'Press q to quit'
     a = gets.chomp
     b = place_input(a, format_arr)
     if b != nil
@@ -70,4 +73,7 @@ while quit == false
 
     end
 end
+
+
+
 

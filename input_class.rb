@@ -1,3 +1,6 @@
+    
+    # This class is where one can define the format of the input.
+    
     class InputObject 
 
         def initialize(inp, start, i, input_type)
@@ -8,10 +11,11 @@
         end
     
     
+        # This method is where one can define the different responses for different input types.
         def process_input()
     
             if (@input_type == 'STRING')
-    
+
                 if (@inp[@start, @increment] == 'PLACE')
                     return [true, @increment]
                 else
@@ -45,6 +49,7 @@
                 return [false]
             end
     
+            return nil
         end
     
     end
